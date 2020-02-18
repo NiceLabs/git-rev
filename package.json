@@ -1,0 +1,25 @@
+{
+  "name": "@nice-labs/git-rev",
+  "version": "3.2.0",
+  "description": "Synchronously get the current git commit hash, tag, or branch",
+  "repository": "https://github.com/NiceLabs/git-rev",
+  "license": "MIT",
+  "author": "septs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "build:watch": "rimraf dist && tsc --watch",
+    "prepublishOnly": "npm run build",
+    "test": "ts-node ./tests/index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
+  },
+  "engines": {
+    "node": ">= 11"
+  }
+}
