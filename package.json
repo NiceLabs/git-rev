@@ -10,14 +10,19 @@
     "build": "rimraf dist && tsc",
     "build:watch": "rimraf dist && tsc --watch",
     "prepublishOnly": "npm run build",
-    "test": "ts-node ./tests/index.ts"
+    "test": "mocha"
   },
   "devDependencies": {
-    "@types/node": "^13.7.1",
+    "@types/chai": "^4.2.9",
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^13.7.6",
+    "@types/rimraf": "^2.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0",
     "rimraf": "^3.0.2",
     "ts-node": "^8.6.2",
-    "tslint": "^6.0.0",
-    "typescript": "^3.7.5"
+    "tslint": "^5.20.1",
+    "typescript": "^3.8.2"
   },
   "engines": {
     "node": ">= 11"

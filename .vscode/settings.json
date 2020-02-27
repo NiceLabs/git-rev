@@ -3,8 +3,11 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.tslint": true
   },
+  "files.associations": {
+    "tslint.json": "jsonc"
+  },
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "ms-vscode.vscode-typescript-tslint-plugin"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
