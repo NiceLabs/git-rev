@@ -1,30 +1,9 @@
-import { execFileSync, ExecFileSyncOptionsWithStringEncoding } from "child_process";
 import { basename } from "path";
+import { ExecValue, GitBase } from "./git-base";
 
-export class Git {
-    private cwd: string | undefined;
-
+export class Git extends GitBase {
     public constructor(cwd?: string) {
-        this.cwd = cwd;
-    }
-
-    public setWorkingDirectory(cwd: string | undefined) {
-        this.cwd = cwd;
-    }
-
-    protected git(...args: string[]) {
-        const options: ExecFileSyncOptionsWithStringEncoding = {
-            encoding: "utf-8",
-            cwd: this.cwd,
-            stdio: ["inherit", "pipe", "pipe"],
-            shell: false,
-        }
-        const output = execFileSync(
-            "git",
-            args.filter((item) => typeof item === "string"),
-            options,
-        );
-        return output.trim();
+        super(cwd);
     }
 
     public getTopLevel() {
@@ -36,7 +15,7 @@ export class Git {
     }
 
     public commitHash(short = false, rev = "HEAD") {
-        return this.git("rev-parse", short && "--short", rev);
+        return this.git("rev-parse", { "--short": short }, rev);
     }
 
     public commitDate() {
@@ -51,42 +30,32 @@ export class Git {
         return this.logN1("%B");
     }
 
-    public describe(...args: string[]) {
-        return this.git("describe", ...args);
+    public describe(...values: ExecValue[]) {
+        return this.git("describe", ...values);
     }
 
-    public getField(name: string) {
-        return this.git("config", "--get", name);
-    }
-
-    public setField(name: string, value: string) {
-        return this.git("config", name, value);
-    }
-
-    public tag(markDirty = false, firstParent = false) {
+    public tag(options?: ITagOptions) {
         return this.describe(
             "--always", "--tag", "--abbrev=0",
-            markDirty && "--dirty",
-            firstParent && "--first-parent"
+            { "--dirty": options?.markDirty, "--first-parent": options?.firstParent },
+            options?.match && ["--match", options?.match],
         );
     }
 
-    public log(fields?: Record<string, string>): Record<string, string>[]
-    public log(fields?: string[]): string[][]
+    public log(fields?: Record<string, string>): Array<Record<string, string>>;
+    public log(fields?: string[]): string[][];
     public log(fields?: any) {
         if (fields === undefined) {
             fields = { hash: "%H", date: "%s", subject: "%cI", name: "%an" };
         }
-        const result = this.git(
-            "log",
-            "--abbrev-commit",
-            `--pretty=format:${JSON.stringify(fields)}`,
-        );
+        const pretty = `--pretty=format:${JSON.stringify(fields)}`;
+        const result = this.git("log", "--abbrev-commit", pretty);
         return JSON.parse(`[${result.replace(/\n/g, ",")}]`);
     }
 
-    public logN1(format: string) {
-        return this.git("log", "-1", `--pretty=format:${format}`);
+    public logN1(format: string): string {
+        const pretty = `--pretty=format:${format}`;
+        return this.git("log", "-1", pretty);
     }
 
     public remoteURL(name = "origin") {
@@ -124,4 +93,10 @@ export class Git {
         const url = this.remoteURL(remoteName);
         return basename(url, ".git");
     }
+}
+
+export interface ITagOptions  {
+    markDirty?: boolean;
+    firstParent?: boolean;
+    match?: string;
 }

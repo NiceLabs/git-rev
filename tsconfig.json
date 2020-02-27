@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es2019",
         "module": "commonjs",
+        "strict": true,
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "noImplicitAny": true,
