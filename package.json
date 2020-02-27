@@ -10,7 +10,7 @@
     "build": "rimraf dist && tsc",
     "build:watch": "rimraf dist && tsc --watch",
     "prepublishOnly": "npm run build",
-    "test": "ts-node ./tests/index.ts"
+    "test": ". ./tests/setup.sh && ts-node ./tests/index.ts && rm -Rf ./tempRepo"
   },
   "devDependencies": {
     "@types/node": "^13.7.1",

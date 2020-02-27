@@ -1,5 +1,5 @@
-import { execFileSync, ExecFileSyncOptionsWithStringEncoding } from "child_process";
-import { basename } from "path";
+import {execFileSync, ExecFileSyncOptionsWithStringEncoding} from "child_process";
+import {basename} from "path";
 
 export class Git {
     private cwd: string | undefined;
@@ -63,11 +63,12 @@ export class Git {
         return this.git("config", name, value);
     }
 
-    public tag(markDirty = false, firstParent = false) {
+    public tag(markDirty = false, firstParent = false, match?: string) {
+        const matchArgs = match ? ['--match', match] : [];
         return this.describe(
             "--always", "--tag", "--abbrev=0",
             markDirty && "--dirty",
-            firstParent && "--first-parent"
+            firstParent && "--first-parent", ...matchArgs
         );
     }
 
@@ -75,7 +76,7 @@ export class Git {
     public log(fields?: string[]): string[][]
     public log(fields?: any) {
         if (fields === undefined) {
-            fields = { hash: "%H", date: "%s", subject: "%cI", name: "%an" };
+            fields = {hash: "%H", date: "%s", subject: "%cI", name: "%an"};
         }
         const result = this.git(
             "log",
@@ -123,5 +124,63 @@ export class Git {
     public repositoryName(remoteName = "origin") {
         const url = this.remoteURL(remoteName);
         return basename(url, ".git");
+    }
+
+    public commit(message: string) {
+        this.git('commit', '-am', message)
+    }
+
+    public createBranch(name: string) {
+        this.git('branch', name);
+
+        return `created branch ${name}`;
+    }
+
+    public checkoutBranch(name: string) {
+        try {
+            this.git('checkout', name);
+
+            return `checked out ${this.branchName()}`;
+        } catch (e) {
+            return `checkout of ${name} failed: ${e.message}`;
+        }
+    }
+
+    public createRemoteBranch(name: string, origin: string = 'origin') {
+        const currentBranch = this.branchName();
+
+        this.createBranch(name);
+        this.checkoutBranch(name);
+        this.push(origin, true, true);
+        this.checkoutBranch(currentBranch);
+    }
+
+    public deleteRemoteBranch(name: string, origin: string = 'origin') {
+        return this.git('push', origin, '--delete',  name)
+    }
+
+    public deleteBranch(name: string) {
+        return this.git( 'branch' , '-d'  ,   name)
+    }
+
+    public createTag(tag: string) {
+        this.git('tag', tag);
+    }
+
+    public push(origin: string = 'origin', noVerify: boolean = true,
+                track: boolean = false, force: boolean = false,
+                includeTags: boolean = true) {
+        const currentBranch = this.branchName();
+        const args = ['push'];
+        if (force) args.push('-f');
+        if (includeTags) args.push('--tags');
+        if (noVerify) args.push('--no-verify');
+        if (track) {
+            args.push('-u');
+            args.push(origin);
+            args.push(currentBranch);
+        }
+
+            this.git(...args)
     }
 }
