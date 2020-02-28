@@ -18,16 +18,16 @@ export class Git extends GitBase {
         return this.git("rev-parse", { "--short": short }, rev);
     }
 
-    public commitDate() {
-        return new Date(this.logN1("%aI"));
+    public commitDate(rev?: string) {
+        return new Date(this.logN1("%aI", rev));
     }
 
     public commitCount() {
         return Number.parseInt(this.git("rev-list", "--all", "--count"), 10);
     }
 
-    public message() {
-        return this.logN1("%B");
+    public message(rev?: string) {
+        return this.logN1("%B", rev);
     }
 
     public describe(...values: ExecValue[]) {
@@ -53,9 +53,9 @@ export class Git extends GitBase {
         return JSON.parse(`[${result.replace(/\n/g, ",")}]`);
     }
 
-    public logN1(format: string): string {
+    public logN1(format: string, rev = "HEAD"): string {
         const pretty = `--pretty=format:${format}`;
-        return this.git("log", "-1", pretty);
+        return this.git("log", "-1", pretty, rev);
     }
 
     public remoteURL(name = "origin") {
