@@ -88,9 +88,10 @@ export class Git extends GitBase {
 
     public isUpdateToDate(branchName = this.branchName(), remoteName = "origin") {
         this.git("fetch", remoteName, branchName);
-        const localHash = this.commitHash();
-        const remoteHash = this.git("rev-parse", `${remoteName}/${branchName}`);
-        return localHash === remoteHash;
+        return (
+            this.commitHash(false, "HEAD") ===
+            this.commitHash(false, `${remoteName}/${branchName}`)
+        );
     }
 
     public repositoryName(remoteName = "origin") {
@@ -99,7 +100,7 @@ export class Git extends GitBase {
     }
 }
 
-export interface ITagOptions  {
+export interface ITagOptions {
     markDirty?: boolean;
     firstParent?: boolean;
     match?: string;
