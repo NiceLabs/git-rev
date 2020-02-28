@@ -26,6 +26,7 @@ describe("git", () => {
     it(".commitHash()", () => {
         const hash = "8069d4fe266d987af1f5260c66e88fcd062e4546";
         assert.equal(git.commitHash(), hash);
+        assert.equal(git.commitHash(4), hash.slice(0, 4));
         assert.equal(git.commitHash(true), hash.slice(0, 7));
     });
 

@@ -14,8 +14,12 @@ export class Git extends GitBase {
         return this.git("rev-parse", "--abbrev-ref", rev);
     }
 
-    public commitHash(short = false, rev = "HEAD") {
-        return this.git("rev-parse", { "--short": short }, rev);
+    public commitHash(short: boolean | number = false, rev = "HEAD") {
+        const makeShort = () => (
+            typeof short === "number" && `--short=${short}` ||
+            short && "--short"
+        );
+        return this.git("rev-parse", makeShort(), rev);
     }
 
     public commitDate(rev?: string) {
