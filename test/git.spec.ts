@@ -7,6 +7,7 @@ import { BUNDLE, cloneBundle, mkdtemp, writeFile } from "./utils";
 describe("git", () => {
     let cwd: string;
     let git: Git;
+    const hash = "8069d4fe266d987af1f5260c66e88fcd062e4546";
 
     before(() => {
         cwd = mkdtemp();
@@ -24,14 +25,15 @@ describe("git", () => {
     });
 
     it(".commitHash()", () => {
-        const hash = "8069d4fe266d987af1f5260c66e88fcd062e4546";
         assert.equal(git.commitHash(), hash);
         assert.equal(git.commitHash(4), hash.slice(0, 4));
         assert.equal(git.commitHash(true), hash.slice(0, 7));
     });
 
     it(".commitDate()", () => {
-        assert.equal(git.commitDate().toISOString(), "2020-02-27T15:07:23.000Z");
+        const date = "2020-02-27T15:07:23.000Z";
+        assert.equal(git.commitDate().toISOString(), date);
+        assert.equal(git.commitDate(hash).toISOString(), date);
     });
 
     it(".commitCount()", () => {
@@ -40,6 +42,7 @@ describe("git", () => {
 
     it(".message()", () => {
         assert.equal(git.message(), "first commit");
+        assert.equal(git.message(hash), "first commit");
     });
 
     it(".describe()", () => {
@@ -60,6 +63,7 @@ describe("git", () => {
 
     it(".isDirty()", () => {
         assert.isTrue(git.isDirty());
+        assert.isTrue(git.isDirty(hash));
     });
 
     it(".isTagDirty()", () => {
