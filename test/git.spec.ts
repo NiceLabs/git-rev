@@ -58,11 +58,7 @@ describe("git", () => {
     });
 
     it(".log()", () => {
-        const format = ["%H", "%s", "%cs", "%an", "%ae"];
-        const history = [
-            [hash, "first commit", "2020-02-27", "Septs", "github@septs.pw"],
-        ];
-        assert.deepEqual(git.log(format), history);
+        assert.deepEqual(git.log("%H"), [hash]);
     });
 
     it(".logN1(...)", () => {
@@ -95,5 +91,4 @@ describe("git", () => {
     it(".repositoryName()", () => {
         assert.equal(git.repositoryName(), "sample.bundle");
     });
-
 });

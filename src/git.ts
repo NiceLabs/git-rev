@@ -46,15 +46,17 @@ export class Git extends GitBase {
         );
     }
 
-    public log(fields?: Record<string, string>): Array<Record<string, string>>;
-    public log(fields?: string[]): string[][];
-    public log(fields?: any) {
+    public log(fields?: Record<string, string>, n?: number): Array<Record<string, string>>;
+    public log(fields?: string[], n?: number): string[][];
+    public log(fields?: string, n?: number): string[];
+    public log(fields?: any, n?: number) {
         if (fields === undefined) {
             fields = { hash: "%H", date: "%s", subject: "%cI", name: "%an" };
         }
-        const pretty = `--pretty=format:${JSON.stringify(fields)}`;
-        const result = this.git("log", "--abbrev-commit", pretty);
-        return JSON.parse(`[${result.replace(/\n/g, ",")}]`);
+        const pretty = `--pretty=format:${JSON.stringify(fields)},`;
+        const count = n && `--max-count=${n}`;
+        const result = this.git("log", "--abbrev-commit", count, pretty);
+        return JSON.parse(`[${result.slice(0, -1)}]`);
     }
 
     public logN1(format: string, rev = "HEAD"): string {
