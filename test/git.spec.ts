@@ -57,6 +57,20 @@ describe("git", () => {
         assert.equal(tag, "v1.0.0-dirty");
     });
 
+    it(".log()", () => {
+        const format = ["%H", "%s", "%cs", "%an", "%ae"];
+        const history = [
+            [hash, "first commit", "2020-02-27", "Septs", "github@septs.pw"],
+        ];
+        assert.deepEqual(git.log(format), history);
+    });
+
+    it(".logN1(...)", () => {
+        assert.equal(git.logN1("%s"), "first commit"); // subject
+        assert.equal(git.logN1("%an"), "Septs"); // author name
+        assert.equal(git.logN1("%ae"), "github@septs.pw"); // author email
+    });
+
     it(".hasUnstagedChanges()", () => {
         assert.isTrue(git.hasUnstagedChanges());
     });
@@ -82,7 +96,4 @@ describe("git", () => {
         assert.equal(git.repositoryName(), "sample.bundle");
     });
 
-    it(".log()", () => {
-        assert.isNotEmpty(git.log());
-    });
 });
