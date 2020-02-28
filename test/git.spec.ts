@@ -1,5 +1,6 @@
 import { assert } from "chai";
 import "mocha";
+import rimraf from "rimraf";
 
 import { Git } from "../src";
 import { BUNDLE, cloneBundle, mkdtemp, writeFile } from "./utils";
@@ -24,6 +25,10 @@ describe("git", () => {
         cloneBundle(cwd);
         writeFile(cwd, "updated");
         git = new Git(cwd);
+    });
+
+    after(() => {
+        rimraf.sync(git.cwd!);
     });
 
     it(".getTopLevel()", () => {

@@ -1,18 +1,22 @@
 import { assert } from "chai";
 import "mocha";
+import rimraf from "rimraf";
 
 import { GitAgent } from "../src";
 import { cloneBundle, mkdtemp, writeFile } from "./utils";
 
 describe("git-agent", () => {
-    let cwd: string;
     let git: GitAgent;
 
     before(() => {
-        cwd = mkdtemp();
+        const cwd = mkdtemp();
         cloneBundle(cwd);
         writeFile(cwd, "updated");
         git = new GitAgent(cwd);
+    });
+
+    after(() => {
+        rimraf.sync(git.cwd!);
     });
 
     it(".checkoutBranch('master')", () => {
