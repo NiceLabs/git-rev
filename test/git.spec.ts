@@ -1,23 +1,38 @@
 import { assert } from "chai";
 import "mocha";
+import rimraf from "rimraf";
 
 import { Git } from "../src";
 import { BUNDLE, cloneBundle, mkdtemp, writeFile } from "./utils";
 
 describe("git", () => {
-    let cwd: string;
     let git: Git;
-    const hash = "8069d4fe266d987af1f5260c66e88fcd062e4546";
+    const commit1 = {
+        message: "first commit",
+        hash: "8069d4fe266d987af1f5260c66e88fcd062e4546",
+        date: "2020-02-27T15:07:23.000Z",
+    };
+    const commit2 = {
+        message: "second commit",
+        hash: "1bdab56686ca40f923ae463d1c799d04eef7919d",
+        date: "2020-02-28T07:54:36.000Z",
+        name: "Septs",
+        email: "github@septs.pw",
+    };
 
     before(() => {
-        cwd = mkdtemp();
+        const cwd = mkdtemp();
         cloneBundle(cwd);
         writeFile(cwd, "updated");
         git = new Git(cwd);
     });
 
+    after(() => {
+        rimraf.sync(git.cwd!);
+    });
+
     it(".getTopLevel()", () => {
-        assert.equal(git.getTopLevel(), cwd);
+        assert.equal(git.getTopLevel(), git.cwd);
     });
 
     it(".branchName()", () => {
@@ -25,28 +40,29 @@ describe("git", () => {
     });
 
     it(".commitHash()", () => {
-        assert.equal(git.commitHash(), hash);
-        assert.equal(git.commitHash(4), hash.slice(0, 4));
-        assert.equal(git.commitHash(true), hash.slice(0, 7));
+        assert.equal(git.commitHash(), commit2.hash);
+        assert.equal(git.commitHash(4), commit2.hash.slice(0, 4));
+        assert.equal(git.commitHash(true), commit2.hash.slice(0, 7));
+
+        assert.equal(git.commitHash(undefined, commit1.hash.slice(0, 4)), commit1.hash);
     });
 
     it(".commitDate()", () => {
-        const date = "2020-02-27T15:07:23.000Z";
-        assert.equal(git.commitDate().toISOString(), date);
-        assert.equal(git.commitDate(hash).toISOString(), date);
+        assert.equal(git.commitDate().toISOString(), commit2.date);
+        assert.equal(git.commitDate(commit1.hash).toISOString(), commit1.date);
     });
 
     it(".commitCount()", () => {
-        assert.equal(git.commitCount(), 1);
+        assert.equal(git.commitCount(), 2);
     });
 
     it(".message()", () => {
-        assert.equal(git.message(), "first commit");
-        assert.equal(git.message(hash), "first commit");
+        assert.equal(git.message(), commit2.message);
+        assert.equal(git.message(commit1.hash), commit1.message);
     });
 
     it(".describe()", () => {
-        assert.equal(git.describe(), "v1.0.0");
+        assert.equal(git.describe(), "v1.0.0-1-g1bdab56");
     });
 
     it(".tag()", () => {
@@ -58,17 +74,13 @@ describe("git", () => {
     });
 
     it(".log()", () => {
-        const format = ["%H", "%s", "%cs", "%an", "%ae"];
-        const history = [
-            [hash, "first commit", "2020-02-27", "Septs", "github@septs.pw"],
-        ];
-        assert.deepEqual(git.log(format), history);
+        assert.deepEqual(git.log("%H"), [commit2.hash, commit1.hash]);
     });
 
     it(".logN1(...)", () => {
-        assert.equal(git.logN1("%s"), "first commit"); // subject
-        assert.equal(git.logN1("%an"), "Septs"); // author name
-        assert.equal(git.logN1("%ae"), "github@septs.pw"); // author email
+        assert.equal(git.logN1("%s"), commit2.message); // subject
+        assert.equal(git.logN1("%an"), commit2.name); // author name
+        assert.equal(git.logN1("%ae"), commit2.email); // author email
     });
 
     it(".hasUnstagedChanges()", () => {
@@ -77,11 +89,11 @@ describe("git", () => {
 
     it(".isDirty()", () => {
         assert.isTrue(git.isDirty());
-        assert.isTrue(git.isDirty(hash));
+        assert.isTrue(git.isDirty(commit1.hash));
     });
 
     it(".isTagDirty()", () => {
-        assert.isFalse(git.isTagDirty());
+        assert.isTrue(git.isTagDirty());
     });
 
     it(".isUpdateToDate()", () => {
@@ -95,5 +107,4 @@ describe("git", () => {
     it(".repositoryName()", () => {
         assert.equal(git.repositoryName(), "sample.bundle");
     });
-
 });
