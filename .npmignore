@@ -1,1 +1,9 @@
 !/dist/
+/test/
+/.vscode/
+/.editorconfig
+/.eslintrc.json
+/.gitflow-rc.json
+/.mocharc.json
+/.prettierrc
+/README.md
