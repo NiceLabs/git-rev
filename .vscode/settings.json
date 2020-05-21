@@ -1,18 +1,6 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
-  },
-  "files.associations": {
-    "tslint.json": "jsonc"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "ms-vscode.vscode-typescript-tslint-plugin"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "source.fixAll.eslint": true
   }
 }

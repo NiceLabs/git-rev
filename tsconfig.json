@@ -1,16 +1,14 @@
 {
-    "compilerOptions": {
-        "target": "es2019",
-        "module": "commonjs",
-        "strict": true,
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "noImplicitAny": true,
-        "sourceMap": true,
-        "declaration": true,
-        "outDir": "./dist"
-    },
-    "include": [
-        "./src"
-    ]
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./dist"
+  },
+  "include": ["./src"]
 }
