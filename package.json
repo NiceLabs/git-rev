@@ -1,6 +1,6 @@
 {
   "name": "@nice-labs/git-rev",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "description": "Synchronously get the current git commit hash, tag, or branch",
   "repository": "https://github.com/NiceLabs/git-rev",
   "license": "MIT",
