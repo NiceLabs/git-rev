@@ -32,6 +32,8 @@ describe('git-agent', () => {
   });
 
   it(".commit('Commit made by test')", () => {
+    git.setField('user.email', 'example@examle.com');
+    git.setField('user.name', 'example');
     git.commit('Commit made by test');
   });
 
