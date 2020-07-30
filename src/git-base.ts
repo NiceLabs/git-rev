@@ -1,4 +1,4 @@
-import { ExecValue, git } from "./exec";
+import { ExecValue, git } from './exec';
 
 export { ExecValue };
 

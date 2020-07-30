@@ -1,3 +1,5 @@
 {
-  "printWidth": 160
+  "quoteProps": "consistent",
+  "singleQuote": true,
+  "trailingComma": "all"
 }

@@ -10,7 +10,7 @@ Forked from [git-rev-sync-js](https://github.com/kurttheviking/git-rev-sync-js).
 ## usage
 
 ```typescript
-import git from "@nice-labs/git-rev";
+import git from '@nice-labs/git-rev';
 
 // short commit-hash
 console.log(git.commitHash(true)); // 75bf4ee

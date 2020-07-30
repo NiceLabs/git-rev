@@ -1,16 +1,16 @@
-import { Git } from "./git";
+import { Git } from './git';
 
 export class GitAgent extends Git {
   public commit(message: string) {
-    this.git("commit", "-am", message);
+    this.git('commit', '-am', message);
   }
 
   public createTag(tag: string) {
-    this.git("tag", tag);
+    this.git('tag', tag);
   }
 
   public createBranch(name: string, remoteName?: string) {
-    this.git("branch", name);
+    this.git('branch', name);
     if (remoteName) {
       const branch = this.branchName();
       this.checkoutBranch(name);
@@ -25,31 +25,35 @@ export class GitAgent extends Git {
 
   public deleteBranch(name: string, remoteName?: string) {
     if (remoteName) {
-      return this.git("push", remoteName, "--delete", name);
+      return this.git('push', remoteName, '--delete', name);
     }
-    return this.git("branch", "--delete", name);
+    return this.git('branch', '--delete', name);
   }
 
   public checkoutBranch(name: string) {
-    this.git("checkout", name);
+    this.git('checkout', name);
   }
 
   public push(options?: PushOptions) {
     const opts = {
-      "--force": options?.force ?? false,
-      "--tags": options?.includeTags ?? false,
-      "--no-verify": !options?.verify,
+      '--force': options?.force ?? false,
+      '--tags': options?.includeTags ?? false,
+      '--no-verify': !options?.verify,
     };
-    const track = options?.track && ["--set-upstream", options?.remoteName ?? "origin", this.branchName()];
-    this.git("push", opts, track);
+    const track = options?.track && [
+      '--set-upstream',
+      options?.remoteName ?? 'origin',
+      this.branchName(),
+    ];
+    this.git('push', opts, track);
   }
 
   public getField(name: string) {
-    return this.git("config", "--get", name);
+    return this.git('config', '--get', name);
   }
 
   public setField(name: string, value: string) {
-    return this.git("config", name, value);
+    return this.git('config', name, value);
   }
 }
 
