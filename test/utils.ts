@@ -8,7 +8,7 @@ export const BUNDLE = path.join(__dirname, 'sample.bundle');
 
 export function mkdtemp() {
   const target = process.env.CI
-    ? path.join(process.env.HOME, os.tmpdir())
+    ? path.join(process.env.HOME!, os.tmpdir())
     : fs.realpathSync(os.tmpdir());
   return fs.mkdtempSync(target);
 }
