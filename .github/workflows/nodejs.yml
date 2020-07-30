@@ -1,0 +1,27 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Authenticate NPM
+        uses: NiceLabs/automatic-github-token@master
+        with:
+          registry: true
+      - name: Install and Test
+        run: npm cit
+      - name: Lint
+        run: npm run lint
+      - name: Publish to GitHub Package (unstable)
+        run: ./scripts/publish-to-github.sh
