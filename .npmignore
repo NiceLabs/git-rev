@@ -1,10 +1,6 @@
 !/dist/
 /test/
-/.vscode/
-/.editorconfig
-/.eslintrc.json
-/.gitflow-rc.json
-/.mocharc.json
-/.prettierrc
+/scripts/
+/.*
 /README.md
 /nice-labs-git-rev-*.tgz
