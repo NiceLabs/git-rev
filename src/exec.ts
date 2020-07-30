@@ -12,25 +12,18 @@ export const git = (values: ExecValue[], cwd?: string) =>
     timeout: 60000, // one minute
   }).trim();
 
-const pattern = (...rest: any[]): string[] => {
+function pattern(...rest: ExecValue[]) {
   let values: string[] = [];
   for (const value of rest) {
     if (!value) {
       continue;
-    } else if (Array.isArray(value) && value.length) {
+    } else if (Array.isArray(value)) {
       values = values.concat(pattern(...value));
-      continue;
-    }
-    switch (typeof value) {
-      case "string":
-      case "number":
-        values = values.concat([String(value)]);
-        continue;
-      case "object":
-        const keys = Object.keys(value);
-        values = values.concat(keys.filter((key) => value[key]));
-        continue;
+    } else if (typeof value === "string" || typeof value === "number") {
+      values = values.concat([String(value)]);
+    } else if (typeof value === "object") {
+      values = values.concat(Object.keys(value).filter((key) => value[key]));
     }
   }
   return values;
-};
+}

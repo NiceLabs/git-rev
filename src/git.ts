@@ -54,7 +54,7 @@ export class Git extends GitBase {
     );
   }
 
-  public log(fields?: Record<string, string>, n?: number): Record<string, string>[];
+  public log<T extends keyof any>(fields?: Record<T, string>, n?: number): Record<T, string>[];
   public log(fields?: string[], n?: number): string[][];
   public log(fields?: string, n?: number): string[];
   public log(fields?: any, n?: number) {
