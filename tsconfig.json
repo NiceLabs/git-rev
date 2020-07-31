@@ -5,6 +5,7 @@
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
+    "downlevelIteration": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,

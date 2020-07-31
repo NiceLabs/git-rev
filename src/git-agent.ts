@@ -38,7 +38,7 @@ export class GitAgent extends Git {
     const opts = {
       '--force': options?.force ?? false,
       '--tags': options?.includeTags ?? false,
-      '--no-verify': !options?.verify,
+      '--no-verify': options?.verify ?? false,
     };
     const track = options?.track && [
       '--set-upstream',
