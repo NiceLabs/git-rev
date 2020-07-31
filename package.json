@@ -14,7 +14,7 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@nice-labs/git-flow-init": "^1.0.1",
+    "@nice-labs/git-flow-init": "^1.1.1",
     "@types/chai": "^4.2.12",
     "@types/eslint": "^7.2.0",
     "@types/mocha": "^8.0.0",
@@ -27,7 +27,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jsdoc": "^30.0.3",
     "eslint-plugin-prefer-arrow": "^1.2.2",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.0",
     "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
