@@ -14,7 +14,6 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "@nice-labs/git-flow-init": "^1.1.1",
     "@types/chai": "^4.2.12",
     "@types/eslint": "^7.2.0",
     "@types/mocha": "^8.0.0",
