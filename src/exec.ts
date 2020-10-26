@@ -17,6 +17,7 @@ export const git = (values: ExecValue[], cwd?: string) =>
     encoding: 'utf-8',
     maxBuffer: 0xffff, // 65535 bytes
     timeout: 60000, // one minute
+    env: { LANG: 'en_US' },
   }).trim();
 
 function* pattern(...rest: ExecValue[]): Iterable<string> {
