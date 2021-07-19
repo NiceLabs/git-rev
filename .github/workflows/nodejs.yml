@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12.x
       - name: Authenticate NPM
-        uses: NiceLabs/automatic-github-token@master
+        uses: dimensiondev/github-token-action@latest
         with:
           registry: true
       - name: Install and Test
