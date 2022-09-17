@@ -92,7 +92,10 @@ export class Git extends GitBase {
     try {
       this.describe('--exact-match', '--tags');
     } catch (err) {
-      if (err.message.includes('no tag exactly matches')) {
+      if (
+        err instanceof Error &&
+        err.message.includes('no tag exactly matches')
+      ) {
         return true;
       }
       throw err;

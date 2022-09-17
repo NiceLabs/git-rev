@@ -2,7 +2,7 @@ import { Git } from './git';
 
 export class GitAgent extends Git {
   public commit(message: string) {
-    this.git('commit', '-am', message);
+    this.git('commit', '--no-gpg-sign', '-am', message);
   }
 
   public createTag(tag: string) {
